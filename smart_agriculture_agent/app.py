@@ -184,4 +184,12 @@ if __name__ == '__main__':
     if not has_disease_model:
         print(">> Note: Computer Vision model not loaded; Knowledgebase mode active.")
     print("="*60 + "\n")
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    import os
+
+if __name__ == "__main__":
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000)),
+        debug=False,
+        use_reloader=False
+    )

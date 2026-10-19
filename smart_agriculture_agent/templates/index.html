@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriSmart AI | Smart Agriculture Agent</title>
+    <!-- Google Fonts for crisp modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2.1">
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="brand-logo">
+                <span class="logo-icon">🌱</span>
+                <span class="logo-text">AgriSmart <span class="logo-highlight">AI</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/crop-recommendation">Crop Recommendation</a></li>
+                <li><a href="/disease-advisory">Crop Disease Advisory</a></li>
+                <li><a href="/fertilizer-advisor">Soil & Fertilizer Advisor</a></li>
+                <li><a href="#features">AI Features</a></li>
+                <li><a href="#workflow">How It Works</a></li>
+                <li><a href="#about">Project Info</a></li>
+            </ul>
+            <div class="nav-badge">
+                <span class="pulse-dot"></span>
+                <span>Academic Project</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-tag">
+                    <span class="tag-icon">🌾</span>
+                    <span>Next-Generation Farming Intelligence</span>
+                </div>
+                <h1 class="hero-title">
+                    Empowering Agriculture with <span class="text-green">Smart AI Decision Making</span>
+                </h1>
+                <p class="hero-subtitle">
+                    A comprehensive college project designed to support farmers and agricultural students with precision crop recommendation, disease diagnosis, and soil nutrient advisory.
+                </p>
+                <div class="hero-actions" style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="/crop-recommendation" class="btn btn-primary">
+                        <span>Recommend Crop Now</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="/disease-advisory" class="btn btn-secondary">
+                        <span>Leaf Disease Advisory</span>
+                    </a>
+                    <a href="/fertilizer-advisor" class="btn btn-secondary">
+                        <span>Soil & Fertilizer Advisor</span>
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Core AI Modules</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Smart Advisory</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Green & Sustainable</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="visual-card">
+                    <div class="card-header-badge">
+                        <span class="badge-dot"></span>
+                        <span>AI Assistant Status: Ready</span>
+                    </div>
+                    <div class="visual-illustration">
+                        <div class="leaf-circle">
+                            <span class="big-emoji">🌿</span>
+                        </div>
+                        <div class="floating-chip chip-1">
+                            <span>🌱 Soil N-P-K Analysis</span>
+                        </div>
+                        <div class="floating-chip chip-2">
+                            <span>🔬 Disease Advisory</span>
+                        </div>
+                        <div class="floating-chip chip-3">
+                            <span>🤖 24/7 Agri Q&A</span>
+                        </div>
+                    </div>
+                    <p class="visual-caption">
+                        Designed for modern precision farming and college laboratory evaluation.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="section features-section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Key Functionalities</span>
+                <h2 class="section-title">The Three Pillars of AgriSmart</h2>
+                <p class="section-subtitle">
+                    Our platform integrates three specialized intelligent tools to assist with every phase of crop production.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Feature 1: Crop Recommendation -->
+                <div class="feature-card highlighted-card">
+                    <div class="feature-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac;">Module 1 (Live)</div>
+                    <div class="feature-icon bg-light-green">
+                        <span>🌾</span>
+                    </div>
+                    <h3 class="feature-title">Crop Recommendation</h3>
+                    <p class="feature-desc">
+                        Recommends the most suitable and profitable crop using a trained Machine Learning model (99.55% accuracy) based on soil nutrients (N, P, K, pH) and climate parameters.
+                    </p>
+                    <ul class="feature-list">
+                        <li>✓ Real 2,200 agricultural sample dataset</li>
+                        <li>✓ Random Forest AI Classifier (99.55% test accuracy)</li>
+                        <li>✓ Agronomic advice & cultivation guidelines</li>
+                    </ul>
+                    <div class="feature-footer">
+                        <a href="/crop-recommendation" class="btn btn-primary" style="width: 100%; justify-content: center; text-decoration: none;">
+                            <span>Open Crop Recommendation</span>
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Feature 2: Crop Disease Advisory -->
+                <div class="feature-card highlighted-card">
+                    <div class="feature-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac;">Module 2 (Live Interface)</div>
+                    <div class="feature-icon bg-light-green">
+                        <span>🍃</span>
+                    </div>
+                    <h3 class="feature-title">Crop Disease Advisory</h3>
+                    <p class="feature-desc">
+                        Inspects uploaded leaf photos, validates image specifications, and delivers verified symptoms, organic remedies, and chemical treatment guidelines.
+                    </p>
+                    <ul class="feature-list">
+                        <li>✓ Leaf photo upload & live preview inspection</li>
+                        <li>✓ File integrity & dimension verification</li>
+                        <li>✓ Verified Agronomic Disease Reference Library</li>
+                    </ul>
+                    <div class="feature-footer">
+                        <a href="/disease-advisory" class="btn btn-primary" style="width: 100%; justify-content: center; text-decoration: none;">
+                            <span>Open Disease Advisory</span>
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Feature 3: Soil Health & Fertilizer Advisor -->
+                <div class="feature-card highlighted-card">
+                    <div class="feature-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac;">Module 3 (Live)</div>
+                    <div class="feature-icon bg-light-green">
+                        <span>🧪</span>
+                    </div>
+                    <h3 class="feature-title">Soil Health & Fertilizer Advisor</h3>
+                    <p class="feature-desc">
+                        Evaluates soil fertility (pH, N, P, K) using Indian Council of Agricultural Research (ICAR) benchmarks and provides cautious, science-based nutrient management advice.
+                    </p>
+                    <ul class="feature-list">
+                        <li>✓ ICAR Soil Health Card rating benchmarks</li>
+                        <li>✓ Cautious split-fertilizer application guidance</li>
+                        <li>✓ 4R Nutrient Stewardship & organic practices</li>
+                    </ul>
+                    <div class="feature-footer">
+                        <a href="/fertilizer-advisor" class="btn btn-primary" style="width: 100%; justify-content: center; text-decoration: none;">
+                            <span>Open Soil & Fertilizer Advisor</span>
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section workflow-section" id="workflow">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">System Architecture</span>
+                <h2 class="section-title">How AgriSmart AI Operates</h2>
+                <p class="section-subtitle">
+                    A streamlined three-step workflow engineered for simplicity and ease of demonstration.
+                </p>
+            </div>
+
+            <div class="workflow-grid">
+                <div class="workflow-card">
+                    <div class="step-number">01</div>
+                    <h4 class="step-title">Input Farm Data</h4>
+                    <p class="step-desc">
+                        The user inputs soil values, climate details, or uploads a photo of an unhealthy leaf into the intuitive web interface.
+                    </p>
+                </div>
+                <div class="workflow-card">
+                    <div class="step-number">02</div>
+                    <h4 class="step-title">AI Processing</h4>
+                    <p class="step-desc">
+                        The backend algorithms process the data using intelligent agricultural decision logic and knowledge databases.
+                    </p>
+                </div>
+                <div class="workflow-card">
+                    <div class="step-number">03</div>
+                    <h4 class="step-title">Actionable Advice</h4>
+                    <p class="step-desc">
+                        Instant results are presented on screen with precise crop choices, treatment recommendations, and farming advice.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Information / College Presentation Section -->
+    <section class="section about-section" id="about">
+        <div class="container">
+            <div class="about-box">
+                <div class="about-header">
+                    <span class="section-tag">Project Overview</span>
+                    <h2 class="section-title">Academic College Project Profile</h2>
+                </div>
+                <div class="about-grid">
+                    <div class="about-info-col">
+                        <h3>Project Objective</h3>
+                        <p>
+                            To build an accessible, intelligent digital assistant that bridges technology and farming. The project aims to improve agricultural productivity, reduce pesticide misuse, and offer a practical tool for academic evaluation.
+                        </p>
+                        <div class="tech-stack-pills">
+                            <span class="pill">Python</span>
+                            <span class="pill">Flask Web Framework</span>
+                            <span class="pill">HTML5 & Modern CSS3</span>
+                            <span class="pill">Vanilla JavaScript</span>
+                            <span class="pill">Machine Learning & AI</span>
+                        </div>
+                    </div>
+                    <div class="about-details-card">
+                        <h4>Project Details</h4>
+                        <div class="details-list">
+                            <div class="detail-row">
+                                <span class="detail-label">Project Title:</span>
+                                <span class="detail-val">Smart Agriculture AI Agent</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Current Stage:</span>
+                                <span class="detail-val"><span class="badge-success">Step 3: Crop Disease Advisory Live</span></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Next Planned Step:</span>
+                                <span class="detail-val">Step 4: Agriculture Q&A Assistant</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Architecture:</span>
+                                <span class="detail-val">Client-Server (Web + Flask)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Feature Previews -->
+    <div id="featureModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">🌱</div>
+            <h3 id="modalTitle" class="modal-title">Feature Details</h3>
+            <p id="modalDescription" class="modal-text">Information description.</p>
+            <div class="modal-progress-box">
+                <span class="modal-progress-title">Implementation Roadmap:</span>
+                <div class="modal-steps">
+                    <span class="step-chip active">✓ Step 1: Homepage</span>
+                    <span class="step-chip">Step 2: Crop Recommendation</span>
+                    <span class="step-chip">Step 3: Disease Advisory</span>
+                    <span class="step-chip">Step 4: AI Assistant</span>
+                </div>
+            </div>
+            <button class="btn btn-primary modal-close-btn" onclick="closeModal()">Got it!</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-left">
+                <span class="footer-brand">🌱 AgriSmart AI</span>
+                <p>Smart Agriculture AI Agent - Developed for College Project Showcase</p>
+            </div>
+            <div class="footer-right">
+                <p>© 2026 Smart Agriculture Project. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}?v=2.1"></script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Disease Advisory | AgriSmart AI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2.3">
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="brand-logo">
+                <span class="logo-icon">🌱</span>
+                <span class="logo-text">AgriSmart <span class="logo-highlight">AI</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/crop-recommendation">Crop Recommendation</a></li>
+                <li><a href="/disease-advisory" class="active">Crop Disease Advisory</a></li>
+                <li><a href="/fertilizer-advisor">Soil & Fertilizer Advisor</a></li>
+                <li><a href="/#features">AI Features</a></li>
+                <li><a href="/#workflow">How It Works</a></li>
+                <li><a href="/#about">Project Info</a></li>
+            </ul>
+            <div class="nav-badge">
+                <span class="pulse-dot"></span>
+                <span>Module 2 Active</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container text-center">
+            <div class="hero-tag">
+                <span class="tag-icon">🍃</span>
+                <span>Module 2 &bull; Plant Pathology Advisory</span>
+            </div>
+            <h1 class="page-title">Crop Disease Advisory & Leaf Inspection</h1>
+            <p class="page-subtitle">
+                Upload a clear close-up photograph of an affected crop leaf. Our advisory system inspects image specifications, provides verified agronomic symptom diagnosis, and offers treatment guidelines.
+            </p>
+            <div class="ml-model-pill {% if not has_model %}pill-warning{% endif %}">
+                <span class="badge-dot {% if not has_model %}dot-warning{% endif %}"></span>
+                <span>
+                    {% if has_model %}
+                    <strong>Computer Vision Model Active:</strong> MobileNetV2 &bull; PlantVillage (38 Classes)
+                    {% else %}
+                    <strong>Computer Vision Model Status:</strong> Not Installed &bull; Verified Agronomic Knowledgebase Active
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="section crop-section">
+        <div class="container">
+
+            <!-- Error Banner -->
+            <div id="errorBanner" class="alert-box alert-error" style="{% if error %}display: flex;{% else %}display: none;{% endif %}">
+                <span class="alert-icon">⚠️</span>
+                <span id="errorMessage" class="alert-text">{{ error or '' }}</span>
+            </div>
+
+            <div class="crop-grid-layout">
+                
+                <!-- Left Column: Image Upload & Preview -->
+                <div class="form-container-card">
+                    <div class="card-title-row">
+                        <div class="icon-bubble">📸</div>
+                        <div>
+                            <h2 class="card-heading">Upload Crop Leaf Photo</h2>
+                            <p class="card-subheading">Select a clear, well-lit image of the infected leaf area</p>
+                        </div>
+                    </div>
+
+                    <form id="diseaseForm" method="POST" action="/disease-advisory" enctype="multipart/form-data">
+                        
+                        <!-- Crop Type Selector -->
+                        <div class="form-group" style="margin-bottom: 18px;">
+                            <label for="cropTypeSelect" class="input-label" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                                <span style="font-weight: 700; color: var(--primary-dark); font-size: 0.92rem;">🌱 Select Crop Type:</span>
+                                <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: normal;">Supported check & verification</span>
+                            </label>
+                            <select id="cropTypeSelect" name="crop_type" class="input-field" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.95rem; background: var(--pure-white); color: var(--text-main); cursor: pointer;">
+                                <option value="auto" selected>🔍 Auto-detect (Supported Crops Only)</option>
+                                <optgroup label="✅ Supported Model Crops (14 Classes)">
+                                    <option value="apple">🍎 Apple</option>
+                                    <option value="blueberry">🫐 Blueberry</option>
+                                    <option value="cherry">🍒 Cherry</option>
+                                    <option value="corn">🌽 Corn (Maize)</option>
+                                    <option value="grape">🍇 Grape</option>
+                                    <option value="orange">🍊 Orange / Citrus</option>
+                                    <option value="peach">🍑 Peach</option>
+                                    <option value="pepper">🫑 Bell Pepper</option>
+                                    <option value="potato">🥔 Potato</option>
+                                    <option value="raspberry">🍓 Raspberry</option>
+                                    <option value="soybean">🌱 Soybean</option>
+                                    <option value="squash">🎃 Squash</option>
+                                    <option value="strawberry">🍓 Strawberry</option>
+                                    <option value="tomato">🍅 Tomato</option>
+                                </optgroup>
+                                <optgroup label="⚠️ Unsupported Field Crops (Safe Guardrail Active)">
+                                    <option value="rice">🌾 Rice (Paddy) — Unsupported</option>
+                                    <option value="cotton">☁️ Cotton — Unsupported</option>
+                                    <option value="wheat">🌾 Wheat — Unsupported</option>
+                                    <option value="coffee">☕ Coffee — Unsupported</option>
+                                    <option value="sugarcane">🎋 Sugarcane — Unsupported</option>
+                                    <option value="other">🌱 Other / Unlisted Crop</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <!-- Drag & Drop Upload Box -->
+                        <div class="drop-zone" id="dropZone">
+                            <input 
+                                type="file" 
+                                id="leafImageInput" 
+                                name="leaf_image" 
+                                accept=".jpg, .jpeg, .png, .webp" 
+                                class="file-input-hidden"
+                            >
+                            <div class="drop-zone-content" id="dropZonePrompt">
+                                <span class="upload-icon">🍃</span>
+                                <p class="drop-title">Drag & drop your leaf image here</p>
+                                <p class="drop-subtitle">or <button type="button" class="browse-link" onclick="document.getElementById('leafImageInput').click()">browse from your device</button></p>
+                                <span class="format-note">Supported formats: JPG, PNG, WEBP &bull; Max 5MB</span>
+                            </div>
+                        </div>
+
+                        <!-- Live Image Preview Box -->
+                        <div class="preview-container" id="previewContainer" style="display: none;">
+                            <div class="preview-header">
+                                <span class="preview-tag">Image Preview</span>
+                                <button type="button" class="btn-clear-preview" onclick="clearSelectedImage()">✕ Remove</button>
+                            </div>
+                            <div class="preview-img-wrapper">
+                                <img id="imagePreview" src="" alt="Selected leaf preview">
+                            </div>
+                            <div class="preview-meta" id="previewMeta">
+                                <span id="metaFileName" class="meta-item">filename.jpg</span>
+                                <span id="metaFileSize" class="meta-item">0 KB</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="form-actions-row">
+                            <button type="submit" id="analyzeBtn" class="btn btn-primary btn-large">
+                                <span class="btn-text">🔬 Analyze Leaf</span>
+                                <span class="spinner" id="analyzeSpinner" style="display: none;"></span>
+                            </button>
+                        </div>
+
+                        <!-- Photography Guidelines -->
+                        <div class="upload-tips-box">
+                            <span class="tips-title">💡 Photography Tips for Accurate Diagnosis:</span>
+                            <ul class="tips-list">
+                                <li>✓ Capture natural daylight; avoid strong flashes or harsh shadows.</li>
+                                <li>✓ Place the diseased leaf flat against a neutral background.</li>
+                                <li>✓ Focus sharply on visible spots, pustules, lesions, or wilting.</li>
+                            </ul>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Right Column: Diagnostic & Advisory Results -->
+                <div class="result-container-card" id="diseaseResultContainer">
+                    
+                    <!-- Dynamic Result Container (AJAX or Server) -->
+                    <div id="diseaseResultView" style="display: none;"></div>
+
+                    <!-- Initial Empty State -->
+                    <div class="empty-result-state" id="emptyDiseaseState">
+                        <div class="empty-icon">🔬</div>
+                        <h3 class="empty-title">Ready for Leaf Image Analysis</h3>
+                        <p class="empty-desc">
+                            Select a plant leaf photo on the left and click <strong>"Analyze Leaf"</strong>. The advisory system will validate your image and provide diagnostic feedback.
+                        </p>
+                        <div class="features-checklist">
+                            <div class="check-item">✓ File integrity & dimension validation</div>
+                            <div class="check-item">✓ Transparent model status detection</div>
+                            <div class="check-item">✓ Verified agronomic treatment protocols</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Bottom Section: Verified Agronomic Disease Reference Library -->
+            <section class="disease-library-section" id="library">
+                <div class="library-header text-center">
+                    <span class="section-tag">Agronomic Knowledgebase</span>
+                    <h2 class="section-title">Verified Crop Disease Reference Library</h2>
+                    <p class="section-subtitle">
+                        Comprehensive, scientifically verified reference symptoms, pathogens, and IPM (Integrated Pest Management) practices for major field crops.
+                    </p>
+                </div>
+
+                <div class="library-grid">
+                    {% for d in reference_diseases %}
+                    <div class="disease-card" id="{{ d.id }}">
+                        <div class="disease-card-top">
+                            <div class="disease-crop-badge">
+                                <span>{{ d.crop_emoji }} {{ d.crop }}</span>
+                            </div>
+                            <span class="pathogen-pill">{{ d.pathogen.split('(')[0].strip() }}</span>
+                        </div>
+
+                        <h3 class="disease-name">{{ d.disease_name }}</h3>
+                        <p class="pathogen-scientific"><em>{{ d.pathogen }}</em></p>
+
+                        <div class="disease-info-block">
+                            <span class="info-label">🔍 Key Leaf Symptoms:</span>
+                            <p class="info-text">{{ d.symptoms }}</p>
+                        </div>
+
+                        <div class="disease-info-block">
+                            <span class="info-label">🌦️ Favorable Climate:</span>
+                            <p class="info-text">{{ d.favorable_conditions }}</p>
+                        </div>
+
+                        <div class="disease-info-block">
+                            <span class="info-label">🚨 Immediate Cultural Steps:</span>
+                            <ul class="library-steps-list">
+                                {% for step in d.immediate_actions %}
+                                <li>&bull; {{ step }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="disease-info-block">
+                            <span class="info-label">💊 Recommended Treatment:</span>
+                            <ul class="library-steps-list">
+                                {% for t in d.treatments %}
+                                <li>&bull; {{ t }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="disease-footer-note">
+                            <span class="prevention-text"><strong>Prevention:</strong> {{ d.prevention }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-left">
+                <span class="footer-brand">🌱 AgriSmart AI</span>
+                <p>Module 2: Crop Disease Advisory &bull; College Project</p>
+            </div>
+            <div class="footer-right">
+                <a href="/" class="btn btn-secondary btn-sm" style="text-decoration: none;">&larr; Back to Homepage</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}?v=2.4"></script>
+    {% if result %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            renderDiseaseAdvisoryResult({{ result | tojson }});
+        });
+    </script>
+    {% endif %}
+</body>
+</html>

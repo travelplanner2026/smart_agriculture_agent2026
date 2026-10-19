@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soil Health & Fertilizer Advisor | AgriSmart AI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2.5">
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="brand-logo">
+                <span class="logo-icon">🌱</span>
+                <span class="logo-text">AgriSmart <span class="logo-highlight">AI</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/crop-recommendation">Crop Recommendation</a></li>
+                <li><a href="/disease-advisory">Crop Disease Advisory</a></li>
+                <li><a href="/fertilizer-advisor" class="active">Soil & Fertilizer Advisor</a></li>
+                <li><a href="/#features">AI Features</a></li>
+                <li><a href="/#workflow">How It Works</a></li>
+                <li><a href="/#about">Project Info</a></li>
+            </ul>
+            <div class="nav-badge">
+                <span class="pulse-dot"></span>
+                <span>Module 3 Active</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container text-center">
+            <div class="hero-tag">
+                <span class="tag-icon">🌱</span>
+                <span>Module 3 &bull; Soil Fertility & Fertilizer Advisory</span>
+            </div>
+            <h1 class="page-title">Soil Health & Fertilizer Advisor</h1>
+            <p class="page-subtitle">
+                Enter your soil test readings (pH, Nitrogen, Phosphorus, Potassium) and choose your intended crop.
+                Receive an objective soil fertility evaluation and cautious, science-based fertilizer management guidance.
+            </p>
+            <div class="ml-model-pill">
+                <span class="badge-dot dot-healthy"></span>
+                <span>
+                    <strong>Agronomic Engine:</strong> Rule-Based ICAR & FAO Soil Standards &bull; Transparent Expert Guidance
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="section crop-section">
+        <div class="container">
+
+            <!-- Error Banner -->
+            <div id="errorBanner" class="alert-box alert-error" style="{% if error %}display: flex;{% else %}display: none;{% endif %}">
+                <span class="alert-icon">⚠️</span>
+                <span id="errorMessage" class="alert-text">{{ error or '' }}</span>
+            </div>
+
+            <div class="crop-grid-layout">
+                
+                <!-- Left Column: Soil Test Input Form -->
+                <div class="form-container-card">
+                    <div class="card-title-row">
+                        <div class="icon-bubble">🧪</div>
+                        <div>
+                            <h2 class="card-heading">Enter Soil Test Information</h2>
+                            <p class="card-subheading">Based on your laboratory or soil health card readings</p>
+                        </div>
+                    </div>
+
+                    <form id="fertilizerForm" method="POST" action="/fertilizer-advisor">
+                        
+                        <!-- Crop Selection -->
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="cropSelect" class="input-label" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                                <span style="font-weight: 700; color: var(--primary-dark); font-size: 0.92rem;">🌾 Select Intended Crop:</span>
+                                <span style="font-size: 0.78rem; color: var(--text-muted);">Crop-specific nutrition</span>
+                            </label>
+                            <select id="cropSelect" name="crop" class="input-field" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.95rem; background: var(--pure-white); color: var(--text-main); cursor: pointer;">
+                                <optgroup label="🌾 Cereals & Grain Crops">
+                                    <option value="rice" selected>🌾 Rice (Paddy)</option>
+                                    <option value="wheat">🌾 Wheat</option>
+                                    <option value="corn">🌽 Corn (Maize)</option>
+                                </optgroup>
+                                <optgroup label="🌱 Legumes & Oilseeds (Nitrogen Fixing)">
+                                    <option value="soybean">🌱 Soybean</option>
+                                    <option value="pulses">🫘 Pulses / Chickpea / Pigeonpea</option>
+                                    <option value="groundnut">🥜 Groundnut (Peanut)</option>
+                                </optgroup>
+                                <optgroup label="🥔 Cash, Fiber & Horticultural Crops">
+                                    <option value="cotton">☁️ Cotton</option>
+                                    <option value="sugarcane">🎋 Sugarcane</option>
+                                    <option value="tomato">🍅 Tomato</option>
+                                    <option value="potato">🥔 Potato</option>
+                                </optgroup>
+                                <optgroup label="🌿 General Agriculture">
+                                    <option value="general">🌿 General Field / Horticultural Crop</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <!-- Soil pH Input -->
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                                <label for="phInput" style="font-weight: 700; color: var(--primary-dark); font-size: 0.9rem;">
+                                    ⚗️ Soil pH (Acidity / Alkalinity):
+                                </label>
+                                <span style="font-size: 0.76rem; color: var(--text-muted); font-weight: 600;">Scale 3.5 – 9.5</span>
+                            </div>
+                            <input 
+                                type="number" 
+                                step="0.1" 
+                                min="3.5" 
+                                max="9.5" 
+                                id="phInput" 
+                                name="ph" 
+                                class="input-field" 
+                                placeholder="e.g. 6.8" 
+                                value="6.5"
+                                required
+                            >
+                            <span class="field-hint" style="display: block; font-size: 0.76rem; color: var(--text-muted); margin-top: 4px;">
+                                Unitless &bull; Ideal neutral range: 6.0 – 7.5
+                            </span>
+                        </div>
+
+                        <!-- Available Nitrogen (N) -->
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                                <label for="nInput" style="font-weight: 700; color: var(--primary-dark); font-size: 0.9rem;">
+                                    🌱 Available Nitrogen (N):
+                                </label>
+                                <span style="font-size: 0.76rem; color: var(--text-muted); font-weight: 600;">0 – 500 kg/ha</span>
+                            </div>
+                            <input 
+                                type="number" 
+                                step="1" 
+                                min="0" 
+                                max="500" 
+                                id="nInput" 
+                                name="n" 
+                                class="input-field" 
+                                placeholder="e.g. 120" 
+                                value="110"
+                                required
+                            >
+                            <span class="field-hint" style="display: block; font-size: 0.76rem; color: var(--text-muted); margin-top: 4px;">
+                                Kilograms per hectare &bull; Adequate benchmark: 140 – 280 kg/ha
+                            </span>
+                        </div>
+
+                        <!-- Available Phosphorus (P) -->
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                                <label for="pInput" style="font-weight: 700; color: var(--primary-dark); font-size: 0.9rem;">
+                                    🌾 Available Phosphorus (P):
+                                </label>
+                                <span style="font-size: 0.76rem; color: var(--text-muted); font-weight: 600;">0 – 150 kg/ha</span>
+                            </div>
+                            <input 
+                                type="number" 
+                                step="1" 
+                                min="0" 
+                                max="150" 
+                                id="pInput" 
+                                name="p" 
+                                class="input-field" 
+                                placeholder="e.g. 18" 
+                                value="18"
+                                required
+                            >
+                            <span class="field-hint" style="display: block; font-size: 0.76rem; color: var(--text-muted); margin-top: 4px;">
+                                kg/ha (as P₂O₅) &bull; Adequate benchmark: 23 – 56 kg/ha
+                            </span>
+                        </div>
+
+                        <!-- Available Potassium (K) -->
+                        <div class="form-group" style="margin-bottom: 22px;">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                                <label for="kInput" style="font-weight: 700; color: var(--primary-dark); font-size: 0.9rem;">
+                                    🪵 Available Potassium (K):
+                                </label>
+                                <span style="font-size: 0.76rem; color: var(--text-muted); font-weight: 600;">0 – 500 kg/ha</span>
+                            </div>
+                            <input 
+                                type="number" 
+                                step="1" 
+                                min="0" 
+                                max="500" 
+                                id="kInput" 
+                                name="k" 
+                                class="input-field" 
+                                placeholder="e.g. 160" 
+                                value="160"
+                                required
+                            >
+                            <span class="field-hint" style="display: block; font-size: 0.76rem; color: var(--text-muted); margin-top: 4px;">
+                                kg/ha (as K₂O) &bull; Adequate benchmark: 140 – 330 kg/ha
+                            </span>
+                        </div>
+
+                        <!-- Action Button -->
+                        <div class="form-actions-row">
+                            <button type="submit" id="assessBtn" class="btn btn-primary btn-large">
+                                <span class="btn-text">🌾 Assess Soil & Advise Fertilizer</span>
+                                <span class="spinner" id="assessSpinner" style="display: none;"></span>
+                            </button>
+                        </div>
+
+                        <!-- Soil Testing Guidelines Box -->
+                        <div class="upload-tips-box" style="margin-top: 22px;">
+                            <span class="tips-title">💡 How to Obtain Accurate Soil Test Data:</span>
+                            <ul class="tips-list">
+                                <li>✓ Collect V-shaped composite core samples from 8–10 spots across the plot (0–15 cm depth).</li>
+                                <li>✓ Mix thoroughly, shade-dry, and submit 500g to your nearest KVK or government laboratory.</li>
+                                <li>✓ Use the values from your official Soil Health Card for maximum accuracy.</li>
+                            </ul>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Right Column: Diagnostic & Fertilizer Advisory Results -->
+                <div class="result-container-card" id="fertilizerResultContainer">
+                    
+                    <!-- Dynamic Result View (AJAX or Server) -->
+                    <div id="fertilizerResultView" style="display: none;"></div>
+
+                    <!-- Initial Empty State -->
+                    <div class="empty-result-state" id="emptyFertilizerState">
+                        <div class="empty-icon">🧪</div>
+                        <h3 class="empty-title">Ready for Soil Nutrient Assessment</h3>
+                        <p class="empty-desc">
+                            Enter your soil test figures on the left and click <strong>"Assess Soil & Advise Fertilizer"</strong>. 
+                            The system will evaluate your nutrient levels against agricultural benchmarks and provide cautious, practical guidance.
+                        </p>
+                        <div class="features-checklist">
+                            <div class="check-item">✓ ICAR Soil Health Card rating scale</div>
+                            <div class="check-item">✓ Cautious split-application fertilizer guidance</div>
+                            <div class="check-item">✓ 4R Nutrient Stewardship & organic practices</div>
+                            <div class="check-item">✓ Transparent, rule-based expert engine (No AI claims)</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Bottom Section: Soil Fertility & Nutrition Reference Guide -->
+            <section class="disease-library-section" id="soil-guide" style="margin-top: 70px;">
+                <div class="library-header text-center">
+                    <span class="section-tag">Agronomic Standards</span>
+                    <h2 class="section-title">Standard Soil Fertility Rating Scale (ICAR)</h2>
+                    <p class="section-subtitle">
+                        Recognized Indian Council of Agricultural Research (ICAR) benchmarks used on national Soil Health Cards to interpret laboratory test reports.
+                    </p>
+                </div>
+
+                <div class="library-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                    
+                    <!-- Soil pH Card -->
+                    <div class="disease-card">
+                        <div class="disease-card-top">
+                            <span class="disease-crop-badge">⚗️ Soil Reaction (pH)</span>
+                            <span class="pathogen-pill">Unitless</span>
+                        </div>
+                        <h3 class="disease-name">Acidity & Alkalinity</h3>
+                        <p class="pathogen-scientific"><em>Logarithmic Hydrogen Ion Activity</em></p>
+                        <div class="disease-info-block">
+                            <span class="info-label">📊 Classification Benchmarks:</span>
+                            <ul class="library-steps-list">
+                                <li>&bull; <strong>&lt; 5.5:</strong> Strongly Acidic (Lime needed)</li>
+                                <li>&bull; <strong>5.5 – 6.5:</strong> Moderately Acidic</li>
+                                <li>&bull; <strong>6.5 – 7.5:</strong> Neutral / Optimum (Peak availability)</li>
+                                <li>&bull; <strong>7.5 – 8.5:</strong> Moderately Alkaline</li>
+                                <li>&bull; <strong>&gt; 8.5:</strong> Strongly Alkaline / Sodic (Gypsum needed)</li>
+                            </ul>
+                        </div>
+                        <div class="disease-footer-note">
+                            <span><strong>Impact:</strong> pH determines chemical solubility and root absorption of all macro- and micro-nutrients.</span>
+                        </div>
+                    </div>
+
+                    <!-- Available Nitrogen Card -->
+                    <div class="disease-card">
+                        <div class="disease-card-top">
+                            <span class="disease-crop-badge">🌱 Primary Macro: N</span>
+                            <span class="pathogen-pill">Alkaline Permanganate Method</span>
+                        </div>
+                        <h3 class="disease-name">Available Nitrogen (N)</h3>
+                        <p class="pathogen-scientific"><em>Readily Mineralizable Organic Nitrogen</em></p>
+                        <div class="disease-info-block">
+                            <span class="info-label">📊 Classification Benchmarks:</span>
+                            <ul class="library-steps-list">
+                                <li>&bull; <strong>Low:</strong> &lt; 140 kg/ha (Requires split fertilizer)</li>
+                                <li>&bull; <strong>Medium / Adequate:</strong> 140 – 280 kg/ha</li>
+                                <li>&bull; <strong>High:</strong> &gt; 280 kg/ha (Reduce synthetic N)</li>
+                            </ul>
+                        </div>
+                        <div class="disease-footer-note">
+                            <span><strong>Function:</strong> Fuels vegetative growth, chlorophyll synthesis, and rapid leafy canopy development.</span>
+                        </div>
+                    </div>
+
+                    <!-- Available Phosphorus Card -->
+                    <div class="disease-card">
+                        <div class="disease-card-top">
+                            <span class="disease-crop-badge">🌾 Primary Macro: P</span>
+                            <span class="pathogen-pill">Olsen's P / Bray's Method</span>
+                        </div>
+                        <h3 class="disease-name">Available Phosphorus (P)</h3>
+                        <p class="pathogen-scientific"><em>Available Phosphate (P₂O₅)</em></p>
+                        <div class="disease-info-block">
+                            <span class="info-label">📊 Classification Benchmarks:</span>
+                            <ul class="library-steps-list">
+                                <li>&bull; <strong>Low:</strong> &lt; 23 kg/ha P₂O₅ (Basal placement)</li>
+                                <li>&bull; <strong>Medium / Adequate:</strong> 23 – 56 kg/ha P₂O₅</li>
+                                <li>&bull; <strong>High:</strong> &gt; 56 kg/ha P₂O₅ (Skip/reduce P)</li>
+                            </ul>
+                        </div>
+                        <div class="disease-footer-note">
+                            <span><strong>Function:</strong> Drives early root elongation, energy transfer (ATP), and early reproductive flowering.</span>
+                        </div>
+                    </div>
+
+                    <!-- Available Potassium Card -->
+                    <div class="disease-card">
+                        <div class="disease-card-top">
+                            <span class="disease-crop-badge">🪵 Primary Macro: K</span>
+                            <span class="pathogen-pill">Ammonium Acetate Extractable</span>
+                        </div>
+                        <h3 class="disease-name">Available Potassium (K)</h3>
+                        <p class="pathogen-scientific"><em>Available Potash (K₂O)</em></p>
+                        <div class="disease-info-block">
+                            <span class="info-label">📊 Classification Benchmarks:</span>
+                            <ul class="library-steps-list">
+                                <li>&bull; <strong>Low:</strong> &lt; 140 kg/ha K₂O (Apply MOP/potash)</li>
+                                <li>&bull; <strong>Medium / Adequate:</strong> 140 – 330 kg/ha K₂O</li>
+                                <li>&bull; <strong>High:</strong> &gt; 330 kg/ha K₂O (Rich reserves)</li>
+                            </ul>
+                        </div>
+                        <div class="disease-footer-note">
+                            <span><strong>Function:</strong> Regulates cell turgor, drought hardiness, pest resistance, and grain/tuber quality.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-left">
+                <span class="footer-brand">🌱 AgriSmart AI</span>
+                <p>Module 3: Soil Health & Fertilizer Advisor &bull; College Project</p>
+            </div>
+            <div class="footer-right">
+                <a href="/" class="btn btn-secondary btn-sm" style="text-decoration: none;">&larr; Back to Homepage</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}?v=2.5"></script>
+    {% if result %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            renderFertilizerResult({{ result | tojson }});
+        });
+    </script>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation | AgriSmart AI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2.1">
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="brand-logo">
+                <span class="logo-icon">🌱</span>
+                <span class="logo-text">AgriSmart <span class="logo-highlight">AI</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/crop-recommendation" class="active">Crop Recommendation</a></li>
+                <li><a href="/disease-advisory">Crop Disease Advisory</a></li>
+                <li><a href="/fertilizer-advisor">Soil & Fertilizer Advisor</a></li>
+                <li><a href="/#features">AI Features</a></li>
+                <li><a href="/#workflow">How It Works</a></li>
+                <li><a href="/#about">Project Info</a></li>
+            </ul>
+            <div class="nav-badge">
+                <span class="pulse-dot"></span>
+                <span>Module 1 Active</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container text-center">
+            <div class="hero-tag">
+                <span class="tag-icon">🌾</span>
+                <span>Module 1 &bull; Machine Learning Advisory</span>
+            </div>
+            <h1 class="page-title">Smart Crop Recommendation System</h1>
+            <p class="page-subtitle">
+                Enter your soil laboratory test values and local climate conditions. Our trained Machine Learning model analyzes your data to recommend the highest-yielding crop with tailored agronomic guidance.
+            </p>
+            <div class="ml-model-pill">
+                <span class="badge-dot"></span>
+                <span>Trained on <strong>2,200</strong> Agricultural Records &bull; <strong>99.55%</strong> Accuracy (Random Forest Classifier)</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="section crop-section">
+        <div class="container">
+            
+            <!-- Quick Preset Samples -->
+            <div class="presets-card">
+                <div class="presets-header">
+                    <span class="presets-title">⚡ Quick Demonstration Presets:</span>
+                    <span class="presets-hint">Click any preset to automatically fill realistic soil & climate test data</span>
+                </div>
+                <div class="preset-buttons">
+                    <button type="button" class="preset-btn" onclick="applyPreset('rice')">🌾 Rice (Monsoon)</button>
+                    <button type="button" class="preset-btn" onclick="applyPreset('maize')">🌽 Maize (Spring/Kharif)</button>
+                    <button type="button" class="preset-btn" onclick="applyPreset('coffee')">☕ Coffee (Hilly/Rainy)</button>
+                    <button type="button" class="preset-btn" onclick="applyPreset('watermelon')">🍉 Watermelon (Hot/Summer)</button>
+                    <button type="button" class="preset-btn" onclick="applyPreset('apple')">🍎 Apple (Cool/Temperate)</button>
+                    <button type="button" class="preset-btn" onclick="applyPreset('cotton')">☁️ Cotton (Black Soil)</button>
+                </div>
+            </div>
+
+            <!-- Error Banner (Client/Server) -->
+            <div id="errorBanner" class="alert-box alert-error" style="{% if error %}display: block;{% else %}display: none;{% endif %}">
+                <span class="alert-icon">⚠️</span>
+                <span id="errorMessage" class="alert-text">{{ error or '' }}</span>
+            </div>
+
+            <div class="crop-grid-layout">
+                
+                <!-- Left Column: Input Form -->
+                <div class="form-container-card">
+                    <div class="card-title-row">
+                        <div class="icon-bubble">🧪</div>
+                        <div>
+                            <h2 class="card-heading">Soil & Climate Parameters</h2>
+                            <p class="card-subheading">Fill in all 7 values from your soil test report</p>
+                        </div>
+                    </div>
+
+                    <form id="cropForm" method="POST" action="/crop-recommendation" novalidate>
+                        
+                        <!-- Soil Nutrients Group -->
+                        <div class="form-group-section">
+                            <span class="group-title">1. Primary Soil Nutrients (NPK)</span>
+                            <div class="input-grid">
+                                
+                                <div class="form-field">
+                                    <label for="inputN">
+                                        Nitrogen (N)
+                                        <span class="unit-badge">kg/ha</span>
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        id="inputN" 
+                                        name="N" 
+                                        step="any"
+                                        placeholder="e.g. 90" 
+                                        value="{{ form_data.get('N', '') }}" 
+                                        required
+                                    >
+                                    <span class="field-hint">Typical range: 0 &ndash; 140 kg/ha</span>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="inputP">
+                                        Phosphorus (P)
+                                        <span class="unit-badge">kg/ha</span>
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        id="inputP" 
+                                        name="P" 
+                                        step="any"
+                                        placeholder="e.g. 42" 
+                                        value="{{ form_data.get('P', '') }}" 
+                                        required
+                                    >
+                                    <span class="field-hint">Typical range: 5 &ndash; 145 kg/ha</span>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="inputK">
+                                        Potassium (K)
+                                        <span class="unit-badge">kg/ha</span>
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        id="inputK" 
+                                        name="K" 
+                                        step="any"
+                                        placeholder="e.g. 43" 
+                                        value="{{ form_data.get('K', '') }}" 
+                                        required
+                                    >
+                                    <span class="field-hint">Typical range: 5 &ndash; 205 kg/ha</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Soil Reaction & Environmental Factors -->
+                        <div class="form-group-section">
+                            <span class="group-title">2. Soil pH & Climate Factors</span>
+                            <div class="input-grid">
+                                
+                                <div class="form-field">
+                                    <label for="inputPH">
+                                        Soil pH
+                                        <span class="unit-badge">0 &ndash; 14</span>
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        id="inputPH" 
+                                        name="ph" 
+                                        step="0.01" 
+                                        placeholder="e.g. 6.50" 
+                                        value="{{ form_data.get('ph', '') }}" 
+                                        required
+                                    >
+                                    <span class="field-hint">Neutral: 6.0 &ndash; 7.5</span>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="inputTemp">
+                                        Temperature
+                                        <span class="unit-badge">&deg;C</span>
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        id="inputTemp" 
+                                        name="temperature" 
+                                        step="0.1" 
+                                        placeholder="e.g. 21.5" 
+                                        value="{{ form_data.get('temperature', '') }}" 
+                                        required
+                                    >
+                                    <span class="field-hint">Average ambient temp</span>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="inputHumidity">
+                                        Humidity
+                                        <span class="unit-badge">%</span>
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        id="inputHumidity" 
+                                        name="humidity" 
+                                        step="0.1" 
+                                        placeholder="e.g. 82.0" 
+                                        value="{{ form_data.get('humidity', '') }}" 
+                                        required
+                                    >
+                                    <span class="field-hint">Relative humidity %</span>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="inputRainfall">
+                                        Annual Rainfall
+                                        <span class="unit-badge">mm</span>
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        id="inputRainfall" 
+                                        name="rainfall" 
+                                        step="0.1" 
+                                        placeholder="e.g. 202.9" 
+                                        value="{{ form_data.get('rainfall', '') }}" 
+                                        required
+                                    >
+                                    <span class="field-hint">Total precipitation (mm)</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="form-actions-row">
+                            <button type="submit" id="submitBtn" class="btn btn-primary btn-large">
+                                <span class="btn-text">🌾 Recommend Crop</span>
+                                <span class="spinner" id="loadingSpinner" style="display: none;"></span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="resetForm()">Clear Form</button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Right Column: Recommendation Results -->
+                <div class="result-container-card" id="resultsContainer">
+                    
+                    {% if result %}
+                    <!-- Server-rendered result if submitted via standard form -->
+                    <div class="result-header">
+                        <span class="result-eyebrow">AI Recommendation Generated</span>
+                        <div class="crop-hero-badge">
+                            <span class="crop-emoji">{{ result.emoji }}</span>
+                            <div class="crop-hero-info">
+                                <h2 class="crop-name">{{ result.crop_name }}</h2>
+                                <div class="confidence-pill {% if not result.has_confidence %}confidence-pill-muted{% endif %}">
+                                    <span class="confidence-dot {% if not result.has_confidence %}dot-muted{% endif %}"></span>
+                                    <span>{{ result.confidence_label }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Educational Model Confidence Disclaimer -->
+                    <div class="confidence-disclaimer-box">
+                        <span class="disclaimer-icon">ℹ️</span>
+                        <div class="disclaimer-text">
+                            <strong>Note on Model Confidence:</strong> Model confidence indicates statistical agreement among decision trees in the historical training data. It does <em>not</em> guarantee that a crop will thrive, as unmeasured real-world factors (such as microclimate, pests, soil drainage, and water quality) also determine success.
+                        </div>
+                    </div>
+
+                    <div class="result-summary-box">
+                        <p class="summary-text">{{ result.summary }}</p>
+                    </div>
+
+                    <!-- Agronomic Specifications Grid -->
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <span class="spec-label">📅 Sowing Season</span>
+                            <span class="spec-val">{{ result.season }}</span>
+                        </div>
+                        <div class="spec-card">
+                            <span class="spec-label">🌱 Ideal Soil Type</span>
+                            <span class="spec-val">{{ result.soil }}</span>
+                        </div>
+                        <div class="spec-card">
+                            <span class="spec-label">⏳ Growth Cycle</span>
+                            <span class="spec-val">{{ result.duration }}</span>
+                        </div>
+                        <div class="spec-card">
+                            <span class="spec-label">💧 Water Requirement</span>
+                            <span class="spec-val">{{ result.water_need }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Agricultural Advisory Notes -->
+                    <div class="advisory-box">
+                        <h4 class="advisory-heading">💡 Agronomic Best Practices</h4>
+                        <div class="tip-item">
+                            <strong>Fertilizer Strategy:</strong> {{ result.fertilizer_tip }}
+                        </div>
+                        <div class="tip-item">
+                            <strong>Care & Monitoring:</strong> {{ result.care_tip }}
+                        </div>
+                    </div>
+
+                    {% if result.runners_up %}
+                    <div class="alternatives-box">
+                        <span class="alternatives-title">Alternative Suitable Crops:</span>
+                        <div class="alternatives-chips">
+                            {% for alt in result.runners_up %}
+                            <span class="alt-chip">{{ alt.emoji }} {{ alt.name }} ({{ alt.probability }}%)</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% else %}
+                    <!-- Placeholder when no result is calculated yet -->
+                    <div class="empty-result-state" id="emptyState">
+                        <div class="empty-icon">🌱</div>
+                        <h3 class="empty-title">Ready for Your Soil Parameters</h3>
+                        <p class="empty-desc">
+                            Fill in the soil nutrients and climate details on the left, or click one of the quick presets above, then click <strong>"Recommend Crop"</strong> to see instant AI suggestions.
+                        </p>
+                        <div class="features-checklist">
+                            <div class="check-item">✓ Multi-factor Random Forest Analysis</div>
+                            <div class="check-item">✓ Sowing season & soil type guidance</div>
+                            <div class="check-item">✓ Fertilizer scheduling recommendations</div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Dynamic Client-Rendered Result Container (Used by AJAX) -->
+                    <div id="dynamicResult" style="display: none;"></div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-left">
+                <span class="footer-brand">🌱 AgriSmart AI</span>
+                <p>Module 1: Crop Recommendation System &bull; College Project</p>
+            </div>
+            <div class="footer-right">
+                <a href="/" class="btn btn-secondary btn-sm" style="text-decoration: none;">&larr; Back to Homepage</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}?v=2.1"></script>
+</body>
+</html>
